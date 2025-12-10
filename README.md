@@ -1,21 +1,20 @@
 # SyncEra Indexer
 
-SyncEra Indexer 是一个面向 zkSync Era 的 Web3 索引器，使用 Go 语言编写，强调「易上手」和「适合作为学习项目」。
+SyncEra Indexer is a Web3 indexer for zkSync Era, written in Go and aimed at being easy to get started with and a good learning project.
 
-项目通过连接 zkSync Era 的 RPC 节点，实时同步区块 / 交易 / 日志数据，解析常见 DeFi / DEX 合约事件（例如 SyncSwap），并将标准化后的结果写入 MySQL 和 Redis。代码结构尽量保持清晰、模块化，方便你阅读、调试和二次开发，用来理解区块链索引器的整体架构和实现方式。
+It connects to zkSync Era RPC nodes to sync block, transaction, and log data in real time, parses common DeFi and DEX contract events (for example, SyncSwap), and writes the normalized results into MySQL and Redis. The codebase is kept clear and modular so you can read, debug, and extend it while understanding how a blockchain indexer is structured and implemented.
 
-如果你是：
-- 想入门 Web3 后端 / 区块链数据索引；
-- 想学习如何用 Go 连接 zkSync Era、消费区块 / 日志；
-- 想为自己或团队搭建一套简单可扩展的链上数据服务，
+If you want to:
+- Get started with Web3 backend or blockchain data indexing;
+- Learn how to use Go to connect to zkSync Era and consume blocks and logs;
+- Build a simple, extensible on-chain data service for yourself or your team,
 
-都可以把这个仓库当作一个实践型脚手架，在此基础上继续扩展更多协议、更多指标和对外 API。
+this repository can serve as a hands-on scaffold to extend with more protocols, more metrics, and external APIs.
 
 
+## Quick Start
 
-## 快速开始
-
-### 1. 启动数据库
+### 1. Start the databases
 
 **Mac / Linux:**
 ```bash
@@ -27,65 +26,65 @@ make up
 start-windows.bat
 ```
 
-### 2. 连接数据库
+### 2. Connect to the databases
 
-使用你的桌面工具连接：
+Use your desktop tools to connect:
 
 **MySQL (Navicat):**
-- 主机: `localhost`
-- 端口: `3307`
-- 用户: `scanner`
-- 密码: `scannerpass`
-- 数据库: `syncswap`
+- Host: `localhost`
+- Port: `3307`
+- User: `scanner`
+- Password: `scannerpass`
+- Database: `syncswap`
 
 **Redis (Another Redis Desktop Manager):**
-- 主机: `localhost`
-- 端口: `6380`
+- Host: `localhost`
+- Port: `6380`
 
-### 3. 配置项目
+### 3. Configure the project
 
 ```bash
 cp config/config.yaml.example config/config.yaml
-# 编辑 config.yaml，填入你的 RPC 地址
+# Edit config.yaml and fill in your RPC endpoint
 ```
 
-### 4. 运行程序
+### 4. Run the program
 
 ```bash
-make deps  # 安装依赖
-make run   # 运行
+make deps  # Install dependencies
+make run   # Start running
 ```
 
-## 常用命令
+## Common Commands
 
 ```bash
-make up      # 启动服务
-make down    # 停止服务
-make logs    # 查看日志
-make db      # 进入 MySQL
-make redis   # 进入 Redis
-make clean   # 删除所有数据（危险）
+make up      # Start services
+make down    # Stop services
+make logs    # View logs
+make db      # Enter MySQL
+make redis   # Enter Redis
+make clean   # Remove all data (dangerous)
 ```
 
-## 端口说明
+## Ports
 
-> 为避免与其他项目冲突，使用非默认端口：
+> Non-default ports are used to avoid conflicts with other projects:
 
-- MySQL: `3307` (默认3306)
-- Redis: `6380` (默认6379)
+- MySQL: `3307` (default 3306)
+- Redis: `6380` (default 6379)
 
-## 项目结构
+## Project Structure
 
 ```
 scan-chain/
-├── config/              # 配置文件
-├── docker/              # Docker 配置
-├── main.go              # 主程序
-├── Makefile             # Mac/Linux 命令
-└── start-windows.bat    # Windows 启动脚本
+├── config/              # Configuration files
+├── docker/              # Docker configuration
+├── main.go              # Main program
+├── Makefile             # Mac/Linux commands
+└── start-windows.bat    # Windows startup script
 ```
 
-## 技术栈
+## Tech Stack
 
 - Go 1.24+
 - MySQL 8.0
@@ -96,7 +95,6 @@ scan-chain/
 
 MIT
 
-## 联系作者
+## Contact
 
-有工作或项目需求，可邮件联系：`austin.rate@foxmail.com`
-
+For work or project inquiries, reach out via email: `austin.rate@foxmail.com`
