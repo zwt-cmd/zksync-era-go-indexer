@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  # MySQL 数据库
+  mysql:
+    image: mysql:8.0
+    container_name: syncswap_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: syncswap
+      MYSQL_USER: scanner
+      MYSQL_PASSWORD: scannerpass
+    ports:
+      - "3307:3306"  # 避免冲突，使用3307
+    volumes:
+      - syncswap_mysql_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4
+    networks:
+      - syncswap_network
+
+  # Redis 缓存
+  redis:
+    image: redis:7-alpine
+    container_name: syncswap_redis
+    restart: always
+    ports:
+      - "6380:6379"  # 避免冲突，使用6380
+    volumes:
+      - syncswap_redis_data:/data
+    networks:
+      - syncswap_network
+
+volumes:
+  syncswap_mysql_data:
+  syncswap_redis_data:
+
+networks:
+  syncswap_network:
+    name: syncswap_network

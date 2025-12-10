@@ -1,0 +1,83 @@
+server:
+  name: "syncswap-indexer"
+  environment: "development"  # development/staging/prod
+
+blockchain:
+  network: "zksync-era"
+  chain_id: 324
+  rpc_url: "YOUR_RPC_URL_HERE"  # 替换为你的RPC地址
+  rpc_backups:
+    - "https://mainnet.era.zksync.io"
+    - "https://zksync.drpc.org"
+    - "https://zksync-mainnet.public.blastapi.io"
+
+syncswap:
+  factories:
+    # V1 工厂（历史数据）
+    classic_v1: "0xf2DAd89f2788a8CD54625C60b55cD3d2D0ACa7Cb"
+    stable_v1: "0x5b9f21d407F35b10CbfDDca17D5D84b129356ea3"
+    
+    # V2 工厂
+    classic_v2: "0x0a34FBDf37C246C0B401da5f00ABd6529d906193"
+    stable_v2: "0x81251524898774F5F2FCaE7E7ae86112Cb5C317f"
+    aqua_v2: "0x20b28B1e4665FFf290650586ad76E977EAb90c5D"
+    
+    # V2.1 工厂
+    classic_v2_1: "0xA757eD0812092E2a8F78e6642a2A3215995A4131"
+    stable_v2_1: "0x582ad7014C3f755Fc0d29eCFC02FAB4c3A2D5a3D"
+    aqua_v2_1: "0x0754870C1aAb00eDCFABDF4e6FEbDD30e90f327d"
+    
+    # V3 工厂
+    range_v3: "0x9D63d318143cF14FF05f8AAA7491904A494e6f13"
+    
+  routers:
+    v1: "0x2da10A1e27bF85cEdD8FFb1AbBe97e53391C0295"
+    v2: "0x9B5def958d0f3b6955cBEa4D5B7809b2fb26b059"
+    v3: "0x1B887a14216Bdeb7F8204Ee6a269Bd9Ff73A084C"
+
+scanner:
+  start_block: 40000000
+  fetch_mode: "block_receipts"
+  batch_size: 1000
+  workers: 5
+
+abi:
+  auto_download: true
+  getabi_endpoint: "https://block-explorer-api.mainnet.zksync.io/api?module=contract&action=getabi&address="
+  save_dir: "./abi"
+  addresses:
+    # V1 Factories
+    - "0xf2DAd89f2788a8CD54625C60b55cD3d2D0ACa7Cb"
+    - "0x5b9f21d407F35b10CbfDDca17D5D84b129356ea3"
+    # V2 Factories
+    - "0x0a34FBDf37C246C0B401da5f00ABd6529d906193"
+    - "0x81251524898774F5F2FCaE7E7ae86112Cb5C317f"
+    - "0x20b28B1e4665FFf290650586ad76E977EAb90c5D"
+    # V2.1 Factories
+    - "0xA757eD0812092E2a8F78e6642a2A3215995A4131"
+    - "0x582ad7014C3f755Fc0d29eCFC02FAB4c3A2D5a3D"
+    - "0x0754870C1aAb00eDCFABDF4e6FEbDD30e90f327d"
+    # V3 Factory
+    - "0x9D63d318143cF14FF05f8AAA7491904A494e6f13"
+    # Routers
+    - "0x2da10A1e27bF85cEdD8FFb1AbBe97e53391C0295"
+    - "0x9B5def958d0f3b6955cBEa4D5B7809b2fb26b059"
+    - "0x1B887a14216Bdeb7F8204Ee6a269Bd9Ff73A084C"
+
+database:
+  host: "localhost"
+  port: 3307              # Docker 配置的端口（避免冲突）
+  user: "scanner"
+  password: "scannerpass"
+  dbname: "syncswap"
+
+redis:
+  host: "localhost"
+  port: 6380              # Docker 配置的端口（避免冲突）
+  password: ""
+  db: 0
+  pool_size: 10
+
+log:
+  level: "info"  # debug/info/warn/error
+  format: "json"  # json/text

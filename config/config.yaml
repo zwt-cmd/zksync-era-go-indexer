@@ -1,0 +1,98 @@
+server:
+  name: "syncswap-indexer" # 项目名称
+  environment: "prod" # 环境
+
+blockchain:
+  network: "zksync-era" # 网络
+  chain_id: 324 # 链 ID
+  rpc_url: "https://mainnet.era.zksync.io"
+  rpc_backups:
+    - "https://mainnet.era.zksync.io"
+    - "https://zksync.drpc.org"
+    - "https://zksync-mainnet.public.blastapi.io"
+    - "https://zksync-mainnet.core.chainstack.com/a65bb3406867941f5537427dc0e05896"
+
+syncswap:
+  # 工厂合约映射（用于识别 PoolCreated 事件）
+  factories:
+    classic_v1: "0xf2DAd89f2788a8CD54625C60b55cD3d2D0ACa7Cb"
+    stable_v1: "0x5b9f21d407F35b10CbfDDca17D5D84b129356ea3"
+    classic_v2: "0x0a34FBDf37C246C0B401da5f00ABd6529d906193"
+    stable_v2: "0x81251524898774F5F2FCaE7E7ae86112Cb5C317f"
+    aqua_v2: "0x20b28B1e4665FFf290650586ad76E977EAb90c5D"
+    classic_v2_1: "0xA757eD0812092E2a8F78e6642a2A3215995A4131"
+    stable_v2_1: "0x582ad7014C3f755Fc0d29eCFC02FAB4c3A2D5a3D"
+    aqua_v2_1: "0x0754870C1aAb00eDCFABDF4e6FEbDD30e90f327d"
+    range_v3: "0x9D63d318143cF14FF05f8AAA7491904A494e6f13"
+
+  # 池子实现（同一类型 + 版本共享同一份 ABI）
+  pool_masters:
+    classic_v1: "0x1e8068EB36671AAdFB494b6F7B5F62dDD5C5a488"
+    stable_v1: "0xf42658BE2689aFa03EcD0FC60f0b962dc8a08a3C"
+    classic_v2: "0x9d8143e8c111e3f8B593536b38826Cfcb19bb2Fe"
+    stable_v2: "0x2Fb63FA81883819F2Ac7B3853F5d51682D485E88"
+    aqua_v2: "0x92f1d196885141B6c81fDc20b7Eb4E67CBeEF771"
+    classic_v2_1: "0x797e84DFB144E051DCe8b5d4b58ba438C62e8A29"
+    stable_v2_1: "0x447b84fed70De4c973Eb40d23bDE6858A78E5c1A"
+    aqua_v2_1: "0xae6A58003C5f7a3f444fAb6107CE7Be022043445"
+    range_v3: "0x12BF23c2Fe929C23Ab375199EFaD425e70c0ECE1"
+
+  routers:
+    # v1: "0x2da10A1e27bF85cEdD8FFb1AbBe97e53391C0295"
+    # v2: "0x9B5def958d0f3b6955cBEa4D5B7809b2fb26b059"
+    v3: "0x1B887a14216Bdeb7F8204Ee6a269Bd9Ff73A084C"
+
+scanner:
+  start_block: 1 # 开始区块
+  fetch_mode: "block_receipts" # 回填首选整块收据再解析日志
+  batch_size: 1000 # 每次批量处理区块数量
+  batch_interval_size: 100 # 批量断点记录进度数据
+  workers: 10 # 并发工作线程数
+
+abi:
+  auto_download: true
+  getabi_endpoint: "https://block-explorer-api.mainnet.zksync.io/api?module=contract&action=getabi&address="
+  save_dir: "./abi"
+  addresses:
+    # Factories（用于解析 PoolCreated 事件）
+    - "0xf2DAd89f2788a8CD54625C60b55cD3d2D0ACa7Cb" # classic_v1
+    - "0x5b9f21d407F35b10CbfDDca17D5D84b129356ea3" # stable_v1
+    - "0x0a34FBDf37C246C0B401da5f00ABd6529d906193" # classic_v2
+    - "0x81251524898774F5F2FCaE7E7ae86112Cb5C317f" # stable_v2
+    - "0x20b28B1e4665FFf290650586ad76E977EAb90c5D" # aqua_v2 --
+    - "0xA757eD0812092E2a8F78e6642a2A3215995A4131" # classic_v2_1
+    - "0x582ad7014C3f755Fc0d29eCFC02FAB4c3A2D5a3D" # stable_v2_1
+    - "0x0754870C1aAb00eDCFABDF4e6FEbDD30e90f327d" # aqua_v2_1
+    - "0x9D63d318143cF14FF05f8AAA7491904A494e6f13" # range_v3
+    # Pool Masters（用于解析 Swap/Mint/Burn 事件）
+    - "0x1e8068EB36671AAdFB494b6F7B5F62dDD5C5a488" # classic_v1
+    - "0xf42658BE2689aFa03EcD0FC60f0b962dc8a08a3C" # stable_v1
+    - "0x9d8143e8c111e3f8B593536b38826Cfcb19bb2Fe" # classic_v2
+    - "0x2Fb63FA81883819F2Ac7B3853F5d51682D485E88" # stable_v2
+    - "0x92f1d196885141B6c81fDc20b7Eb4E67CBeEF771" # aqua_v2
+    - "0x797e84DFB144E051DCe8b5d4b58ba438C62e8A29" # classic_v2_1
+    - "0x447b84fed70De4c973Eb40d23bDE6858A78E5c1A" # stable_v2_1
+    - "0xae6A58003C5f7a3f444fAb6107CE7Be022043445" # aqua_v2_1
+    - "0x12BF23c2Fe929C23Ab375199EFaD425e70c0ECE1" # range_v3
+    # Routers（可选）
+    # - "0x2da10A1e27bF85cEdD8FFb1AbBe97e53391C0295" # router_v1
+    # - "0x9B5def958d0f3b6955cBEa4D5B7809b2fb26b059" # router_v2
+    - "0x1B887a14216Bdeb7F8204Ee6a269Bd9Ff73A084C" # router_v3
+
+database:
+  host: "localhost"
+  port: 3307
+  user: "scanner"
+  password: "scannerpass"
+  dbname: "syncswap"
+
+redis:
+  host: "localhost"
+  port: 6380
+  password: ""
+  db: 0
+  pool_size: 10
+
+log:
+  level: "info"
+  format: "json"

@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  # MySQL 数据库
+  mysql:
+    image: mysql:8.0
+    container_name: syncswap_mysql
+    restart: always
+    platform: linux/arm64  # Mac M1/M2/M3 优化
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword # 根密码
+      MYSQL_DATABASE: syncswap # 数据库名称
+      MYSQL_USER: scanner # 用户名
+      MYSQL_PASSWORD: scannerpass # 密码
+    ports:
+      - "3307:3306"  # 避免冲突，使用3307
+    volumes:
+      - syncswap_mysql_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4
+    networks:
+      - syncswap_network
+
+  # Redis 缓存
+  redis:
+    image: redis:7-alpine # Redis 7 Alpine 镜像
+    container_name: syncswap_redis # 容器名称
+    restart: always # 自动重启
+    platform: linux/arm64 # ARM64 原生镜像，性能更好
+    ports:
+      - "6380:6379"  # 避免冲突，使用6380
+    volumes:
+      - syncswap_redis_data:/data # 数据卷
+    networks:
+      - syncswap_network # 网络
+
+volumes:
+  syncswap_mysql_data:
+  syncswap_redis_data:
+
+networks:
+  syncswap_network:
+    name: syncswap_network
